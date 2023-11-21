@@ -308,7 +308,9 @@
                                 d="M21.1299 7.74011C23.2673 7.74011 25 6.00742 25 3.87005C25 1.73268 23.2673 0 21.1299 0C18.9926 0 17.2599 1.73268 17.2599 3.87005C17.2599 6.00742 18.9926 7.74011 21.1299 7.74011Z"
                                 fill="#FF0000" />
                         </svg>
+                        <NuxtLink to="/order">
                         <span class="vietnam hide">Giỏ hàng</span>
+                    </NuxtLink>
                     </div>
 
                     <div class="flex items-center">
@@ -929,7 +931,7 @@ export default {
     }
     .flex-container, 
     .flex-gap-5{
-        gap: 37px;
+        gap: 36px;
     }
     .header-container{
         padding: 0 90px;
