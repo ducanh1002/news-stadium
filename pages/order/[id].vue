@@ -182,6 +182,7 @@
                     </div>
                     <div class="order-detail-list">
                         <div class="payment-detail-rows">
+                            
                             <div class="check-box">
                                 <input type="checkbox" id="tickBox" name="tickBox" class="checkbox">
                             </div>
@@ -192,6 +193,7 @@
                                 </div>
                                 <span>ATM Card(Thẻ nội địa)</span>
                             </div>
+
                             <div class="check-box">
                                 <input type="checkbox" id="tickBox" name="tickBox" class="checkbox">
                             </div>

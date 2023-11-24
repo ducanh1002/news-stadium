@@ -7,30 +7,33 @@
             <div class="order-list">
                 <div class="order-all" >
                     <div class="check-box" style="display: inline-block;">
-                        <input type="checkbox" id="tickBox" name="tickBox" class="checkbox">
-                        <label for="tickBox">Chọn tất cả</label>
-                    </div>
+                        <input type="checkbox" id="selectAll" name="selectAll" class="checkbox">
+                        <label for="selectAll">Chọn tất cả</label>
+                      </div>
                     <span >Đơn giá</span>
                     <span >Số lượng</span>
                     <span>Thành tiền</span>
-                    <button>Xóa tất cả</button>
+                    <button @click="resetSelectedItems">Xóa tất cả</button>
               
                 </div>
                 <div class="order-detail">
                     <div class="order-detail-header">
-                        <div class="check-box" data-v-inspector="pages/order/index.vue:30:29" data-v-17a44f9d=""><input
-                                type="checkbox" id="tickBox" name="tickBox" class="checkbox"
+                        <div class="check-box" data-v-inspector="pages/order/index.vue:30:29" data-v-17a44f9d="">
+                            <input
+                            type="checkbox" id="tickBoxHeader" name="tickBoxHeader" class="checkbox" v-model="allItemsChecked" @change="checkAllItems"
                                 data-v-inspector="pages/order/index.vue:31:33" data-v-17a44f9d="">
                             </div>
+                            <div class="header-location" @click="handleHeaderClick" style="cursor: pointer">
                         <span>
                             <img src="/images/location.png" alt="ketqualol" class="location" style="margin-right: 5px;">
                         </span>
                         <span>OEG Stadium Chợ Mơ</span>
                     </div>
+                    </div>
                     <div class="order-detail-list">
                         <div v-for="(item, index) in items1" :key="index" class="order-detail-rows">
                             <div class="check-box">
-                                <input type="checkbox" id="tickBox" name="tickBox" class="checkbox">
+                                <input type="checkbox" :id="'tickBox' + index" name="tickBox" class="checkbox" v-model="item.checked">
                             </div>
                             <div>
                                 <img src="/images/D1-new 1.png" alt="ketqualol" class="location" style="margin-right: 5px;">
@@ -41,8 +44,8 @@
                                 <p>01 Khoai tây chiên (M)</p>
                             </div>
                             <div class="order-price">
-                                <span class="original-price">60.000 đ</span>
-                                <span class="sale-price">55.000 đ</span>
+                                <span class="original-price">{{ formatPrice(60000) }}</span>
+                                <span class="sale-price">{{ formatPrice(55000) }}</span>
                             </div>
                             <div class="order-quantity" >
                                 <button @click="decrementQuantity(index, 1)">
@@ -70,7 +73,7 @@
                         </div>
                         <div v-for="(item, index) in items2" :key="index" class="order-detail-rows">
                             <div class="check-box">
-                                <input type="checkbox" id="tickBox" name="tickBox" class="checkbox">
+                                <input type="checkbox" :id="'tickBox' + index" name="tickBox" class="checkbox" v-model="item.checked">
                             </div>
                             <div>
                                 <img src="/images/D6 2.png" alt="ketqualol" class="location" style="margin-right: 5px;">
@@ -81,8 +84,8 @@
                                 <p>01 Khoai tây chiên (M)</p>
                             </div>
                             <div class="order-price">
-                                <span class="original-price">60.000 đ</span>
-                                <span class="sale-price">40.000 đ</span>
+                                <span class="original-price">{{ formatPrice(60000) }}</span>
+                                <span class="sale-price">{{ formatPrice(40000) }}</span>
                             </div>
                             <div class="order-quantity">
                                 <button @click="decrementQuantity(index, 2)">
@@ -104,7 +107,7 @@
                             <div class="order-money">
                                 <span class="total-price">{{ formatPrice(calculateTotal(item)) }}</span>
                             </div>
-                            <div class="order-delete" style="cursor:pointer">
+                            <div class="order-delete" style="cursor:pointer" @click="resetItem(index, items2)">
                                 <img src="/images/delete.png" alt="delete">
                             </div>
                         </div>
@@ -122,8 +125,8 @@
                                 <p>01 Khoai tây chiên (M)</p>
                             </div>
                             <div class="order-price">
-                                <span class="original-price">60.000 đ</span>
-                                <span class="sale-price-soldout">55.000 đ</span>
+                                <span class="original-price">{{ formatPrice(60000) }}</span>
+                                <span class="sale-price-soldout">{{ formatPrice(55000) }}</span>
                                 <p class="sold-out">Hết hàng</p>
                             </div>
                             <div class="order-quantity">
@@ -146,13 +149,13 @@
                             <div class="order-money">
                                 <span class="total-price-soldout">0đ</span>
                             </div>
-                            <div class="order-delete" style="cursor:pointer">
+                            <div class="order-delete" style="cursor:pointer" >
                                 <img src="/images/delete.png" alt="delete">
                             </div>
                         </div>
                         <div v-for="(item, index) in items3" :key="index" class="order-detail-rows">
                             <div class="check-box">
-                                <input type="checkbox" id="tickBox" name="tickBox" class="checkbox">
+                                <input type="checkbox" :id="'tickBox' + index" name="tickBox" class="checkbox" v-model="item.checked">
                             </div>
                             <div>
                                 <img src="/images/D1-new 1.png" alt="ketqualol" class="location" style="margin-right: 5px;">
@@ -163,8 +166,8 @@
                                 <p>01 Khoai tây chiên (M)</p>
                             </div>
                             <div class="order-price">
-                                <span class="original-price">60.000 đ</span>
-                                <span class="sale-price">55.000 đ</span>
+                                <span class="original-price">{{ formatPrice(60000) }}</span>
+                                <span class="sale-price">{{ formatPrice(55000) }}</span>
                             </div>
                             <div class="order-quantity">
                                 <button @click="decrementQuantity(index, 3)">
@@ -186,7 +189,7 @@
                             <div class="order-money">
                                 <span class="total-price">{{ formatPrice(calculateTotal(item)) }}</span>
                             </div>
-                            <div class="order-delete" style="cursor:pointer">
+                            <div class="order-delete" style="cursor:pointer" @click="resetItem(index, items3)">
                                 <img src="/images/delete.png" alt="delete">
                             </div>
                         </div>
@@ -280,7 +283,7 @@
                         <div class="discount-header">
                             <div>
                                 <div class="discount-infor" v-if="!showDiscountInput">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="12" viewBox="0 0 16 12" fill="none">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="12" viewBox="0 0 16 12" fill="none" style="margin-top: 5px">
                                         <path
                                             d="M10.2401 2.99997L11.2001 3.89996L5.76006 8.99996L4.80006 8.09996L10.2401 2.99997ZM1.60006 -3.48968e-05H14.4001C15.2881 -3.48968e-05 16.0001 0.667465 16.0001 1.49997V4.49996C15.5757 4.49996 15.1688 4.658 14.8687 4.93931C14.5686 5.22061 14.4001 5.60214 14.4001 5.99996C14.4001 6.39779 14.5686 6.77932 14.8687 7.06063C15.1688 7.34193 15.5757 7.49996 16.0001 7.49996V10.5C16.0001 11.3325 15.2881 12 14.4001 12H1.60006C1.17572 12 0.768749 11.8419 0.468691 11.5606C0.168633 11.2793 6.21736e-05 10.8978 6.21736e-05 10.5V7.49996C0.888062 7.49996 1.60006 6.83247 1.60006 5.99996C1.60006 5.60214 1.43149 5.22061 1.13143 4.93931C0.831375 4.658 0.424409 4.49996 6.21736e-05 4.49996V1.49997C6.21736e-05 1.10214 0.168633 0.720609 0.468691 0.439305C0.768749 0.158 1.17572 -3.48968e-05 1.60006 -3.48968e-05ZM1.20006 1.12497L1.13143 3.40496C1.61758 3.66776 2.11934 4.04442 2.40006 4.49996C2.68078 4.95551 2.80006 5.47387 2.80006 5.99996C2.80006 6.52606 2.68078 6.66942 2.40006 7.12496C2.11934 7.58051 1.68621 7.83716 1.20006 8.09996V10.875H14.8001V8.24996C14.3139 7.98717 13.8808 7.95551 13.6001 7.49996C13.3193 7.04442 13.2001 6.52606 13.2001 5.99996C13.2001 5.47387 13.3193 4.95551 13.6001 4.49996C13.8808 4.04442 14.3139 4.01276 14.8001 3.74996V1.12497H1.20006ZM6.00006 2.99997C6.66406 2.99997 7.20006 3.50247 7.20006 4.12496C7.20006 4.74747 6.66406 5.24996 6.00006 5.24996C5.33606 5.24996 4.80006 4.74747 4.80006 4.12496C4.80006 3.50247 5.33606 2.99997 6.00006 2.99997ZM10.0001 6.74996C10.6641 6.74996 11.2001 7.25246 11.2001 7.87496C11.2001 8.49747 10.6641 8.99996 10.0001 8.99996C9.33606 8.99996 8.80006 8.49747 8.80006 7.87496C8.80006 7.25246 9.33606 6.74996 10.0001 6.74996Z"
                                             fill="#1D92FF" />
@@ -308,7 +311,7 @@
                     </div>
                     <div class="giamgia">
                         <span class="order-discount-fontbasic">Giảm giá</span>
-                        <span class="order-discount-fontbasic1">0đ</span>
+                        <span class="order-discount-fontbasic1">{{ formatPrice(0) }}</span>
                     </div>
                     <div class="order-line">
 
@@ -317,13 +320,22 @@
                         <span class="order-discount-fontbasic3">Tổng tiền</span>
                         <span class="order-discount-fontbasic1">{{ formatPrice(total) }}</span>
                     </div>
+                </div>
 
-                </div>
-                <NuxtLink to="/order/thanh-toan">
-                <div class="btn-payment">
-                    <button>Đặt hàng</button>
-                </div>
-            </NuxtLink>
+                  <div>
+                    <button v-if="totalQuantity > 0" class="btn-payment">
+                        <NuxtLink to="/order/thanh-toan">
+                            <div>
+                              <button @click="handleOrder">Đặt hàng ({{ totalQuantity }})</button>
+                            </div>
+                          </NuxtLink>
+                    </button>
+                    <button v-else class="btn-payment">
+                        <div>
+                            <button @click="displayError">Đặt hàng ({{ totalQuantity }})</button>
+                        </div>
+                    </button>
+                  </div>
             </div>
         </div>
     </div>
@@ -334,10 +346,56 @@ export default {
     data() {
         return {
       showDiscountInput: false,
-      discountCode: ''
+      discountCode: '',
+      totalQuantity: 0,
+      selectedAll: false
+
     }
   },
+
   methods: {
+    /*handle 2 click checkbox*/
+    handleHeaderClick() {
+        this.checkHeaderCheckbox();
+        this.checkAllItems();
+    },
+    /*check the checkbox when click on name*/
+    checkHeaderCheckbox() {
+        this.allItemsChecked = !this.allItemsChecked;
+    },
+    /*check all the checkbox on the rows*/
+    checkAllItems() {
+  for (let item of this.items1) {
+    item.checked = this.allItemsChecked;
+  }
+  for (let item of this.items2) {
+    item.checked = this.allItemsChecked;
+  }
+  for (let item of this.items3) {
+    item.checked = this.allItemsChecked;
+  }
+}, 
+resetSelectedItems() {
+    for (let item of this.items1) {
+      if (item.checked) {
+        item.quantity = 0;
+        item.price = price;
+      }
+    }
+    for (let item of this.items2) {
+      if (item.checked) {
+        item.quantity = 0;
+        item.price = price;
+      }
+    }
+    for (let item of this.items3) {
+      if (item.checked) {
+        item.quantity = 0;
+        item.price = price;
+      }
+    }
+  },
+
     toggleDiscountInput() {
         console.log('Toggle method called');
       this.showDiscountInput = !this.showDiscountInput;
@@ -345,14 +403,22 @@ export default {
     applyDiscountCode() {
       alert('Mã giảm giá đã được áp dụng: ' + this.discountCode);
     },
+    displayError() {
+      alert('Your shopping cart is empty.');
+    },
     
     resetItem(index, itemList){
         itemList[index].quantity=0;
-        itemList[index].price = 0;
+        itemList[index].price = price;
     },
+    resetAll(index, items) {
+    items.forEach(item => {
+      item.quantity = 0;
+    });
+},
+
 
     incrementQuantity(index, set) {
-       
     if (set === 1) {
       this.items1[index].quantity++;
     } else if (set === 2) {
@@ -379,28 +445,32 @@ export default {
   formatPrice(price) {
     const formattedPrice = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
     return formattedPrice.replace(/\D00(?=\D*$)/, ''); // Remove decimal if .00
-  }
+  },
+  
+
   },
   data() {
     return {
+        allItemsChecked: false,
         items1: [
-                    { name: 'Combo Burger Bò Teriyaki', quantity: 0, price: 55000 },
-                    
+                    { checked: false, name: 'Combo Burger Bò Teriyaki', quantity: 0, price: 55000},
                 ],
                 items2: [
-                    { name: 'Combo Burger Bò Teriyaki', quantity: 0, price: 40000 },
-                  
+                    { checked: false, name: 'Combo Burger Bò Teriyaki', quantity: 0, price: 40000},
                 ],
                 items3: [
-                    {name: 'Combo Burger Bò MacDonald', quantity: 0, price: 45000},
+                    { checked: false, name: 'Combo Burger Bò MacDonald', quantity: 0, price: 45000},
                 ],
                 items4: [
-                    {name: 'Combo Burger Bò Teriyaki', quantity: 0, price: 55000}
-                ]
+                    { checked: false, name: 'Combo Burger Bò Teriyaki', quantity: 0, price: 55000}
+                ],
+            
     };
   },
 
 computed: {
+    
+    /*total each items*/
   total() {
     let total = 0;
     for (const item of this.items1) {
@@ -413,16 +483,42 @@ computed: {
       total += item.quantity * item.price;
     }
     return total;
-  },
+},
+/*total cart*/
+  updateTotal() {
+  this.total = 0;
+  for (const item of this.items1) {
+    this.total += item.quantity * item.price;
+  }
+  for (const item of this.items2) {
+    this.total += item.quantity * item.price;
+  }
+  for (const item of this.items3) {
+    this.total += item.quantity * item.price;
+  }
+},
+/*total quantity*/
+totalQuantity() {
+  let total = 0;
+  for (const item of this.items1) {
+    total += item.quantity;
+  }
+  for (const item of this.items2) {
+    total += item.quantity;
+  }
+  for (const item of this.items3) {
+    total += item.quantity;
+  }
+  return total;
+},
+
 }
 }
 </script>
 
 <style scoped>
-
 /*responsive*/
 /**mobile screen**/
-
 
 @media screen and (max-width: 768px) {
 
@@ -614,6 +710,9 @@ computed: {
     }
 }
 
+.header-location{
+    display: flex;
+}
 .line{
     width: 100%;
 height: 1px;
